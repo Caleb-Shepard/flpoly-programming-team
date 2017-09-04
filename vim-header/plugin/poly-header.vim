@@ -6,7 +6,7 @@
 "    By: cshepard6055 <cshepard6055@floridapoly.edu>    |  \`-\   \ |  o       "
 "                                                       |---\  \   `|  l       "
 "    Created: 2017/09/04 12:42:13 by cshepard6055       | ` .\  \   |  y       "
-"    Updated: 2017/09/04 17:34:00 by aces               -------------          "
+"    Updated: 2017/09/04 18:22:17 by aces               -------------          "
 "                                                                              "
 " **************************************************************************** "
 "           \"     ------| \-----      ",
@@ -94,7 +94,7 @@ endfunction
 function! s:user()
 	let l:user = $USER
 	if strlen(l:user) == 0
-		let l:user = "marvin"
+		let l:user = "flpoly-students"
 	endif
 	return l:user
 endfunction
@@ -102,7 +102,7 @@ endfunction
 function! s:mail()
 	let l:mail = $MAIL
 	if strlen(l:mail) == 0
-		let l:mail = "marvin@42.fr"
+		let l:mail = "allstudents@floridapoly.edu"
 	endif
 	return l:mail
 endfunction
