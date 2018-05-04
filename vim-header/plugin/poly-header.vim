@@ -6,19 +6,45 @@
 "    By: cshepard6055 <cshepard6055@floridapoly.edu>    |  \`-\   \ |  o       "
 "                                                       |---\  \   `|  l       "
 "    Created: 2017/09/04 12:42:13 by cshepard6055       | ` .\  \   |  y       "
-"    Updated: 2017/09/04 18:22:17 by cshepard6055       -------------          "
+"    Updated: 2018/05/03 21:05:23 by tigermoo           -------------          "
 "                                                                              "
 " **************************************************************************** "
 
-let s:asciiart = [
-            \"                 |\      ",
-            \"     ------| \\----      ",
-            \"      |    \`  \  |  p   ",
-            \"      |  \`-\   \ |  o   ",
-            \"      |---\  \   `|  l   ",
-            \"      | ` .\  \   |  y   ",
-            \"          -------------      "
+let s:poly1 = [
+            \'            |\           ',
+            \'      ------| \----      ',
+            \'      |    \`  \  |  p   ',
+            \'      |  \`-\   \ |  o   ',
+            \'      |---\  \   `|  l   ',
+            \'      | ` .\  \   |  y   ',
+            \'      -------------      '
 			\]
+
+let s:ucf1 = [
+            \'     \\ \\               ',
+            \'     ||_|| ____          ',
+            \'     \___// __/ ____     ',
+            \'         | |__ / ___|    ',
+            \'          \___|| |__     ',
+            \'               |  _/     ',
+            \'               |_|       '
+            \]
+
+let s:ucf2 = [
+            \'                         ',
+            \'  university of          ',
+            \'  central                ',
+            \'  florida                ',
+            \'                   ]     ',
+            \' <::::::::::::::::}]xxx@ ',
+            \'                   ]     '
+            \]
+
+let s:artoptions = {'poly1' : s:poly1, 'ucf1' : s:ucf1, 'ucf2' : s:ucf2,}
+let s:asciiart = s:poly1
+
+let s:user = 'default'
+let s:email = 'default'
 
 let s:start		= '/*'
 let s:end		= '*/'
@@ -82,28 +108,12 @@ function! s:line(n)
 	elseif a:n == 4 " filename
 		return s:textline(s:filename(), s:ascii(a:n))
 	elseif a:n == 6 " author
-		return s:textline("By: " . s:user() . " <" . s:mail() . ">", s:ascii(a:n))
+		return s:textline("By: " . s:user . " <" . s:email . ">", s:ascii(a:n))
 	elseif a:n == 8 " created
-		return s:textline("Created: " . s:date() . " by " . s:user(), s:ascii(a:n))
+		return s:textline("Created: " . s:date() . " by " . s:user, s:ascii(a:n))
 	elseif a:n == 9 " updated
-		return s:textline("Updated: " . s:date() . " by " . s:user(), s:ascii(a:n))
+		return s:textline("Updated: " . s:date() . " by " . s:user, s:ascii(a:n))
 	endif
-endfunction
-
-function! s:user()
-	let l:user = $USER
-	if strlen(l:user) == 0
-		let l:user = "flpoly-students"
-	endif
-	return l:user
-endfunction
-
-function! s:mail()
-	let l:mail = $MAIL
-	if strlen(l:mail) == 0
-		let l:mail = "allstudents@floridapoly.edu"
-	endif
-	return l:mail
 endfunction
 
 function! s:filename()
@@ -149,7 +159,26 @@ function! s:stdheader()
 	endif
 endfunction
 
-" Bind command and shortcut
-command! Stdheader call s:stdheader ()
+function! s:setUser(name)
+    let s:user = a:name
+endfunction
+
+function! s:setEmail(email)
+    let s:email = a:email
+endfunction
+
+function! s:setArt(art)
+    let s:asciiart = s:artoptions[a:art]
+endfunction
+
+" Commands
+command! -nargs=1 HeaderSetUser call s:setUser(<f-args>)
+command! -nargs=1 HeaderSetEmail call s:setEmail(<f-args>)
+command! -nargs=1 HeaderSetArt call s:setArt(<f-args>)
+command! HeaderAdd call s:stdheader ()
+
+" Key bindings
 nmap <f1> <esc>:Stdheader<CR>
+
+" Call update function after each write
 autocmd BufWritePre * call s:update ()
